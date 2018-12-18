@@ -1,8 +1,10 @@
 package cn.com.qjun.findplus.ui.view;
 
 import cn.com.qjun.findplus.ui.model.HelloWorldViewModel;
+import com.jfoenix.controls.JFXButton;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.JavaView;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -24,6 +26,14 @@ public class HelloWorldView extends VBox implements JavaView<HelloWorldViewModel
 
     public HelloWorldView() {
         getChildren().add(helloLabel);
+        JFXButton firstButton = new JFXButton("Press Me");
+        JFXButton secondButton = new JFXButton("Press Me Too");
+        Observable.merge(
+                JavaFxObservable.actionEventsOf(firstButton),
+                JavaFxObservable.actionEventsOf(secondButton)
+        ).subscribe(i -> System.out.println("You pressed one of the buttons!"));
+        getChildren().add(firstButton);
+        getChildren().add(secondButton);
         setPadding(new Insets(10, 10, 10, 10));
     }
 
